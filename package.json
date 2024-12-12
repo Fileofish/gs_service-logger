@@ -1,0 +1,32 @@
+{
+  "name": "gs_service-logger",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "build": "npm run type-check && node esbuild.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/node-cron": "^3.0.11",
+    "@types/sqlite3": "^3.1.11",
+    "esbuild": "^0.24.0",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.7.2"
+  }
+}
