@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.DEV_TELEGRAM_CHAT_ID;
 
@@ -15,12 +13,24 @@ export const sendTelegramMessage = async (message: string) => {
 
   try {
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    await axios.post(url, {
-      chat_id: CHAT_ID,
-      text: message,
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message,
+      }),
     });
-    console.log("Telegram notification sent.");
+
+    if (!response.ok) {
+      const errorResponse = await response.text();
+      console.error("Failed to send Telegram message:", response.status, errorResponse);
+    } else {
+      console.log("Telegram notification sent.");
+    }
   } catch (err) {
-    console.error("Failed to send Telegram message:", err);
+    console.error("Error occurred while sending Telegram message:", err);
   }
 };
