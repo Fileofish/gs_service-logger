@@ -63,3 +63,9 @@ jobs:
           chmod 600 /tmp/deploy_key
           ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
           pm2 startup systemd --user root && pm2 save"
+          
+      - name: Send success message to Telegram
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+          -H "Content-Type: application/json" \
+          -d '{"chat_id": "${{ secrets.TELEGRAM_CHAT_ID }}", "text": "✅ Build and deployment of Logger service were successful!"}'
