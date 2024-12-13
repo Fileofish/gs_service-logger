@@ -2,12 +2,14 @@ import { build } from 'esbuild';
 
 build({
   entryPoints: ['./src/index.ts'],
-  outfile: './dist/app.js', // Компилируем в dist
+  outfile: './dist/app.js',  // Компилируем в dist
   bundle: true,
   platform: 'node',
   target: 'node22',
   format: 'cjs',
-  external: ['*'], // Исключить все зависимости из node_modules
+  external: ['*'],  // Исключить все зависимости из node_modules
+  minify: true,     // Минификация кода
+  sourcemap: true,  // Генерация карт исходников для отладки
 }).then(() => {
   console.log('Build complete!');
 }).catch((error) => {
