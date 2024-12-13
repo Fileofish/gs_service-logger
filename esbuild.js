@@ -13,7 +13,7 @@ build({
   bundle: true,
   platform: 'node',
   target: 'node22',
-  format: 'cjs',
+  format: 'esm',
   external: ['*'],
   minify: true,
   sourcemap: true,
