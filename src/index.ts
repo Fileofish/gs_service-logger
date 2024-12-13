@@ -5,13 +5,8 @@ import { startSocketServer } from "./utils/socketHandler";
 import { archiveLogs } from "./utils/archiver";
 
 dotenv.config();
-
 initLogsTable();
-console.log("Logs table initialized.");
-
 startSocketServer();
-
 cron.schedule("0 0 * * *", () => {
-  console.log("Starting archive task...");
   archiveLogs();
 });
