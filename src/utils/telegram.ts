@@ -25,13 +25,17 @@ export const sendTelegramMessage = async (message: string) => {
       }),
     });
 
+    console.log("Response status:", response.status);  // Логируем статус ответа
     const responseBody = await response.json();
+    console.log("Response body:", responseBody);  // Логируем тело ответа
+
     if (!response.ok) {
       const errorMessage = `Failed to send Telegram message: ${response.status}, ${responseBody.description}`;
       console.error(errorMessage);
       return errorMessage;
     } else {
       console.log("Telegram notification sent.");
+      // Возвращаем успешный ответ с message_id
       return `Message sent successfully: ${responseBody.result.message_id}`;
     }
   } catch (err) {
