@@ -25,13 +25,24 @@ export const sendTelegramMessage = async (message: string) => {
       }),
     });
 
+    const responseBody = await response.json();
     if (!response.ok) {
-      const errorResponse = await response.text();
-      console.error("Failed to send Telegram message:", response.status, errorResponse);
+      const errorMessage = `Failed to send Telegram message: ${response.status}, ${responseBody.description}`;
+      console.error(errorMessage);
+      return errorMessage;
     } else {
       console.log("Telegram notification sent.");
+      return `Message sent successfully: ${responseBody.result.message_id}`;
     }
   } catch (err) {
-    console.error("Error occurred while sending Telegram message:", err);
+    let errorMessage: string;
+    if (err instanceof Error) {
+      errorMessage = `Error occurred while sending Telegram message: ${err.message}`;
+      console.error(errorMessage);
+    } else {
+      errorMessage = `Error occurred while sending Telegram message: ${JSON.stringify(err)}`;
+    }
+    console.error(errorMessage);
+    return errorMessage;
   }
 };
