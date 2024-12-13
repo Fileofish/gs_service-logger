@@ -15,7 +15,7 @@ To run this microservice, the following environment variables are required:
 
 - **`SOCKET_PATH`**: The path to the Unix socket for log communication. Default: `/tmp/gs_logger.sock`.
 - **`TELEGRAM_BOT_TOKEN`**: The bot token for sending notifications via Telegram.
-- **`TELEGRAM_CHAT_ID`**: The Telegram chat ID to which error messages will be sent.
+- **`DEV_TELEGRAM_CHAT_ID`**: The Telegram chat ID to which error messages will be sent.
 - **`DATABASE_PATH`**: The path to the SQLite database file for storing logs. Default: `./logs/logger.db`.
 - **`ARCHIVE_PATH`**: The directory where logs will be archived daily. Default: `./logs/archive`.
 
@@ -50,7 +50,7 @@ pm2 save
 
 Logs are inserted into the SQLite database using the following format:
 
-```json
+```js
 {
   "level": "error",       // Log level (e.g., 'info', 'warn', 'error', 'debug')
   "message": "This is an error message",
