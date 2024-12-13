@@ -1,8 +1,8 @@
 import cron from "node-cron";
 import dotenv from "dotenv";
 import { initLogsTable } from "./models/logs";
-import { startSocketServer } from "./utils/socketHandler";
-import { archiveLogs } from "./utils/archiver";
+import { startSocketServer } from "./utils/socketHandler.js";
+import { archiveLogs } from "./utils/archiver.js";
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import db from "./db";
+import db from "./db.js";
 
 interface Log {
   id: string;

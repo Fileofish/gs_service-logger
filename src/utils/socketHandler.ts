@@ -1,6 +1,6 @@
 import net from "net";
 import fs from "fs";
-import { saveLog } from "../controllers/logs";
+import { saveLog } from "../controllers/logs.js";
 
 const SOCKET_PATH = process.env.SOCKET_PATH || "/tmp/gs_logger.sock";
 
