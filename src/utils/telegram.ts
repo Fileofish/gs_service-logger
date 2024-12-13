@@ -6,6 +6,7 @@ if (!BOT_TOKEN || !CHAT_ID) {
 }
 
 export const sendTelegramMessage = async (message: string) => {
+  console.log('check telegram');
   if (!BOT_TOKEN || !CHAT_ID) {
     console.error("Telegram bot token or chat ID is not set.");
     return;

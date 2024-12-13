@@ -1,7 +1,7 @@
 import db from "../utils/db";
 import { sendTelegramMessage } from "../utils/telegram";
 
-export const saveLog = (level: string, message: string, source?: string) => {
+export const saveLog = async (level: string, message: string, source?: string) => {
   try {
     // Подготовка SQL-запроса для вставки лога
     const stmt = db.prepare(
@@ -17,7 +17,7 @@ export const saveLog = (level: string, message: string, source?: string) => {
       const notification = `🚨 *Error Logged* 🚨
   - Message: ${message}
   - Source: ${source || "unknown"}`;
-      sendTelegramMessage(notification);
+      await sendTelegramMessage(notification);
     }
   } catch (err) {
     if (err instanceof Error) {

@@ -19,10 +19,10 @@ export const startSocketServer = () => {
   }
 
   // Создаём сервер
-  const server = net.createServer((connection) => {
+  const server = net.createServer(async (connection) => {
     console.log("Client connected to log service");
 
-    connection.on("data", (data) => {
+    connection.on("data", async (data) => {
       try {
         const log = JSON.parse(data.toString()); // Парсим JSON из запроса
         const { level, message, source } = log;
@@ -35,7 +35,7 @@ export const startSocketServer = () => {
         }
 
         // Сохраняем лог в базе данных
-        saveLog(level, message, source);
+        await saveLog(level, message, source);
 
         // Отправляем подтверждение клиенту
         connection.write("Log saved\n");
