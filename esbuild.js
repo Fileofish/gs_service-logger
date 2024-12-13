@@ -2,13 +2,12 @@ import { build } from 'esbuild';
 
 build({
   entryPoints: ['./src/index.ts'],
-  outfile: './shared/logger/app.js',
+  outfile: './dist/app.js', // Компилируем в dist
   bundle: true,
-  minify: true,
   platform: 'node',
   target: 'node22',
   format: 'cjs',
-  external: ['better-sqlite3'],
+  external: ['*'], // Исключить все зависимости из node_modules
 }).then(() => {
   console.log('Build complete!');
 }).catch((error) => {

@@ -3,7 +3,7 @@ name: Deploy Logger Service
 on:
   push:
     branches:
-      - main  # Событие для ветки main
+      - main  # Деплой выполняется при пуше в main
 
 jobs:
   build-and-deploy:
@@ -24,35 +24,35 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Шаг 4: Собираем бандл
+      # Шаг 4: Собираем проект в папку dist
       - name: Build project
-        run: node esbuild.js
-
-      # Шаг 5: Получаем IP агента GitHub Actions
-      - name: Fetch GitHub Actions IP
-        run: echo "::set-output name=IP::$(curl -s ifconfig.me)"
-        id: fetch_ip
-
-      # Шаг 6: Логируем IP (опционально)
-      - name: Log GitHub Actions IP
         run: |
-          echo "GitHub Actions Agent IP: ${{ steps.fetch_ip.outputs.IP }}"
+          mkdir -p dist &&
+          node esbuild.js
 
-      # Шаг 7: Загружаем бандл на сервер
-      - name: Deploy to server
+      # Шаг 5: Копируем dist и package.json на сервер
+      - name: Deploy dist and package.json
         uses: appleboy/scp-action@v0.1.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: './shared/logger/app.js'
-          target: '/root'
+          source: './dist/** ./package.json'
+          target: '/root/shared/logger'
           port: 22
-          debug: true
 
-      # Шаг 8: Перезапускаем сервис на сервере
-      - name: Restart logger service
+      # Шаг 6: Устанавливаем production-зависимости и минифицируем node_modules на сервере
+      - name: Install production dependencies and clean node_modules
         run: |
           echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          cd /root/shared/logger &&
+          npm install --omit=dev &&
+          npx modclean --run &&
+          find node_modules -type f \( -name '*.md' -o -name '*.ts' -o -name 'test*' -o -name '*.map' \) -delete"
+
+      # Шаг 7: Перезапускаем сервис
+      - name: Restart logger service
+        run: |
           ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart gs_service-logger"
