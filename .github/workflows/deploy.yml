@@ -48,6 +48,18 @@ jobs:
           npx modclean --run &&
           find node_modules -type f \( -name '*.md' -o -name '*.ts' -o -name 'test*' -o -name '*.map' \) -delete"
 
-      - name: Restart logger service
+      - name: Install pm2 globally and start app
         run: |
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart gs_service-logger"
+          echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          cd /root/shared/logger &&
+          pm2 start ./app.js --name 'logger-service' --watch &&
+          pm2 save"
+
+      - name: Ensure pm2 is started on boot
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          pm2 startup systemd --user root && pm2 save"
