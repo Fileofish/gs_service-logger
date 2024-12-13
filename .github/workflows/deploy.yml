@@ -52,4 +52,7 @@ jobs:
 
       # Шаг 8: Перезапускаем сервис на сервере
       - name: Restart logger service
-        run: ssh -i ~/root/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart gs_service-logger"
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart gs_service-logger"
