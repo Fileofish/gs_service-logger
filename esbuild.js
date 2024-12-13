@@ -1,6 +1,5 @@
 import { build } from 'esbuild';
 import fs from 'fs';
-import path from 'path';
 
 const packageJsonPath = './package.json';
 const distPath = './dist/package.json';
@@ -14,7 +13,7 @@ build({
   platform: 'node',
   target: 'node22',
   format: 'esm',
-  external: ['*'],
+  external: ['dotenv', 'express', 'node-cron', 'better-sqlite3'],
   minify: true,
   sourcemap: true,
 }).then(() => {

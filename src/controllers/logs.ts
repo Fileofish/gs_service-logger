@@ -1,5 +1,5 @@
-import db from "../utils/db.js";
-import { sendTelegramMessage } from "../utils/telegram.js";
+import db from "../utils/db";
+import { sendTelegramMessage } from "../utils/telegram";
 
 export const saveLog = (level: string, message: string, source?: string) => {
   try {
