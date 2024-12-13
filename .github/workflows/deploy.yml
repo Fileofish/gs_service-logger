@@ -50,16 +50,7 @@ jobs:
           port: 22
           debug: true
 
-      # Шаг 8: Устанавливаем better-sqlite3 на сервере
-      - name: Install better-sqlite3 on server
-        run: |
-          echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
-            npm install better-sqlite3 --prefix /root/shared/logger --omit=dev
-          "
-
-      # Шаг 9: Перезапускаем сервис на сервере
+      # Шаг 8: Перезапускаем сервис на сервере
       - name: Restart logger service
         run: |
           echo "${{ secrets.SSH_KEY }}" > /tmp/deploy_key
