@@ -31,7 +31,9 @@ jobs:
           node esbuild.js
 
       - name: Check if files exist
-        run: ls -al ./dist
+        run: |
+          ls -al ./dist
+          ls -al ./package.json
 
       # Шаг 5: Копируем dist и package.json на сервер
       - name: Deploy dist and package.json
@@ -40,7 +42,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: './dist/** ./package.json'
+          source: './dist/* ./package.json'
           target: '/root/shared/logger'
           port: 22
           debug: true
