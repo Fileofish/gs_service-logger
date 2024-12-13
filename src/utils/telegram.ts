@@ -26,17 +26,17 @@ export const sendTelegramMessage = async (message: string) => {
     const responseBody = await response.json();
 
     if (!response.ok) {
-      const errorMessage = `Failed to send Telegram message: ${response.status}, ${responseBody.description}`;
+      const errorMessage = ` Failed to send Telegram message: ${response.status}, ${responseBody.description}`;
       return errorMessage;
     } else {
-      return `TG message sent successfully`;
+      return ` TG message sent successfully`;
     }
   } catch (err) {
     let errorMessage: string;
     if (err instanceof Error) {
-      errorMessage = `Error occurred while sending Telegram message: ${err.message}`;
+      errorMessage = ` Error occurred while sending Telegram message: ${err.message}`;
     } else {
-      errorMessage = `Error occurred while sending Telegram message: ${JSON.stringify(err)}`;
+      errorMessage = ` Error occurred while sending Telegram message: ${JSON.stringify(err)}`;
     }
     return errorMessage;
   }
