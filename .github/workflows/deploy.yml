@@ -30,6 +30,9 @@ jobs:
           mkdir -p dist &&
           node esbuild.js
 
+      - name: Check if files exist
+        run: ls -al ./dist
+
       # Шаг 5: Копируем dist и package.json на сервер
       - name: Deploy dist and package.json
         uses: appleboy/scp-action@v0.1.0
@@ -40,6 +43,7 @@ jobs:
           source: './dist/** ./package.json'
           target: '/root/shared/logger'
           port: 22
+          debug: true
 
       # Шаг 6: Устанавливаем production-зависимости и минифицируем node_modules на сервере
       - name: Install production dependencies and clean node_modules
