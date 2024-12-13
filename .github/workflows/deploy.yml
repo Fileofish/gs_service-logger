@@ -47,6 +47,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: './shared/logger/app.js'
           target: '/root/shared/logger/app.js'
+          port: 22
+          debug: true
 
       # Шаг 8: Перезапускаем сервис на сервере
       - name: Restart logger service
