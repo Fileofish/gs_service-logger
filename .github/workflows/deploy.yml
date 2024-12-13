@@ -28,7 +28,17 @@ jobs:
       - name: Build project
         run: node esbuild.js
 
-      # Шаг 5: Загружаем бандл на сервер
+      # Шаг 5: Получаем IP агента GitHub Actions
+      - name: Fetch GitHub Actions IP
+        run: echo "::set-output name=IP::$(curl -s ifconfig.me)"
+        id: fetch_ip
+
+      # Шаг 6: Логируем IP (опционально)
+      - name: Log GitHub Actions IP
+        run: |
+          echo "GitHub Actions Agent IP: ${{ steps.fetch_ip.outputs.IP }}"
+
+      # Шаг 7: Загружаем бандл на сервер
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.0
         with:
@@ -38,6 +48,6 @@ jobs:
           source: './shared/logger/app.js'
           target: '/root/shared/logger/app.js'
 
-      # Шаг 6: Перезапускаем сервис на сервере
+      # Шаг 8: Перезапускаем сервис на сервере
       - name: Restart logger service
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart gs_service-logger"
